@@ -15,28 +15,16 @@
         regexp: 'https://10\.0\.2\.15:6443'
         replace: "https://{{ ansible_default_ipv4.address }}"
 
-    - name: Create Kubernetes directory on client if it doesn't exist
-      file:
-        path: /home/vagrant/kubernetes
-        state: directory
-
-    - name: Synchronize Kubernetes directory from controller to client
+    - name: Copier le répertoire Kubernetes depuis le contrôleur vers le client
       synchronize:
         src: /home/vagrant/datascientest/kubernetes/
         dest: /home/vagrant/kubernetes
+        mode: push
         recursive: yes
 
-    - name: Ensure the Kubernetes config file is accessible
-      file:
-        path: /etc/rancher/k3s/k3s.yaml
-        owner: vagrant
-        group: vagrant
-        mode: '0644'
-
-    - name: Exécuter kubectl apply -k dans le répertoire Kubernetes
-      command: /usr/local/bin/kubectl apply -k /home/vagrant/kubernetes
-#      args:
-#        chdir: /home/vagrant/datascientest/kubernetes
+    - name: Appliquer la stack Kubernetes avec kubectl
+      shell: |
+        KUBECONFIG=/etc/rancher/k3s/k3s.yaml /usr/local/bin/kubectl apply -k /home/vagrant/kubernetes
 
   handlers:
     - name: redémarrer k3s
