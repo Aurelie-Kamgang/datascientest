@@ -1,5 +1,9 @@
 all:
   children:
     prod:
-      k3s:
-      docker:
+      hosts:
+        k3s:
+    docker:
+      hosts:
+        # Ajoutez ici les hôtes Docker si nécessaire
+

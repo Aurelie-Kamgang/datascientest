@@ -1,1 +1,1 @@
-ansible_user: centos
+ansible_user: vagrant
